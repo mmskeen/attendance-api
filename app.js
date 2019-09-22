@@ -272,9 +272,15 @@ app.route("/users/:userId/attendEvent")
 .post(function(req, res) {
   Meeting.findOne({code: req.body.code}, function(err, foundMeeting) {
     if (foundMeeting) {
-      foundMeeting.attendees.push(req.params.userId);
-      foundMeeting.save();
-      res.json({ success: true, description: foundMeeting.title, code: req.body.code });
+      console.log(foundMeeting.attendees);
+      if (foundMeeting.attendees.includes(req.params.userId)) {
+        res.json({ success: false, error: "You have already attended meeting with code "
+          + req.body.code + "." });
+      } else {
+        foundMeeting.attendees.push(req.params.userId);
+        foundMeeting.save();
+        res.json({ success: true, description: foundMeeting.title, code: req.body.code });
+      }
     } else if (err) {
       res.json({ success: false, error: err });
     } else {
