@@ -10,7 +10,12 @@ mongoose.connect("mongodb://localhost:27017/attendanceDB", {useNewUrlParser: tru
 
 const userSchema = new mongoose.Schema({
   email: String,
-  name: String
+  firstName: String,
+  lastName: String,
+  preferredEmail: String,
+  cellPhone: String,
+  birthDate: String,
+  schoolId: String
 });
 
 const meetingSchema = new mongoose.Schema({
@@ -70,7 +75,8 @@ app.route("/users")
 .post(function(req, res) {
   const newUser = new User({
     email: req.body.email,
-    name: req.body.name
+    firstName: req.body.firstName,
+    lastName: req.body.lastName
   });
   newUser.save(function(err) {
     if (!err) {
@@ -110,7 +116,11 @@ app.route("/users/:userId")
 .put(function(req, res) {
   User.replaceOne(
     {_id: req.params.userId},
-    {email: req.body.email, name: req.body.name},
+    {
+      email: req.body.email,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName
+    },
     function(err) {
       if (!err) {
         res.send("Successfully updated user");
