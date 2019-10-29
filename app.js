@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -6,9 +7,10 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect("mongodb://localhost:27017/attendanceDB", {useNewUrlParser: true});
+mongoose.connect("mongodb+srv://admin-michael:" + process.env.MONGO_PASSWORD + "@cluster0-flcwo.mongodb.net/attendanceDB", {useNewUrlParser: true});
 
 const userSchema = new mongoose.Schema({
+  username: String,
   email: String,
   firstName: String,
   lastName: String,
@@ -341,10 +343,13 @@ app.route("/users/:userId/meetingsHosted")
   });
 });
 
-
-app.listen(3001, function(err) {
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3001;
+}
+app.listen(port, function(err) {
   if (!err) {
-    console.log("API server started on port 3001.");
+    console.log("API server started on port " + port + ".");
   } else {
     console.log(err);
   }

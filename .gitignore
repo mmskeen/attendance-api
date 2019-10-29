@@ -1,6 +1,12 @@
 # Dependency directories
 node_modules/
 
+npm-debug.log
+.DS_Store
+/*.env
+
 # dotenv environment variables file if it exists
 .env
 .env.test
+
+workingNotes.txt
